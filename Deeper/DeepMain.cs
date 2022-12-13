@@ -17,14 +17,16 @@ using System.Text;
 
 #pragma warning disable 0169
 
-struct sString
+#region sString
+public struct sString
 {
-    string key;
-    string value;
+    public string key;
+    public string value;
 }
+#endregion
 
 #region TRIPLET
-class Triplet<T>
+public class Triplet<T>
 {
     //constructor
     public Triplet(T t1, T t2, T t3)
@@ -40,9 +42,9 @@ class Triplet<T>
     //!destrcutor
 
     //member data
-    T _triplet_unit_1;
-    T _triplet_unit_2;
-    T _triplet_unit_3;
+    public T _triplet_unit_1;
+    public T _triplet_unit_2;
+    public T _triplet_unit_3;
     //!member data
 
     //operator overriding
@@ -130,90 +132,147 @@ class Triplet<T>
 #endregion //!TRIPLET
 
 #region TRIPLET_CONTAINER
-class TripletContainer<T>
+public enum TripletConPos { START, END, ALL }
+public class TripletContainer<T> : IList<Triplet<T>>
 {
-    //constructor
-    public TripletContainer(List<Triplet<T>> arr)
+    private List<Triplet<T>> tripletCon;
+    private IEnumerable<Triplet<T>> tripletConLoader;
+    public TripletContainer()
+        : base() { }
+    public TripletContainer(IEnumerable<Triplet<T>> tripletConLoader)
     {
-        this.TC_arr = new List<Triplet<T>>(arr);
+        this.tripletConLoader = tripletConLoader;
+        tripletCon = new List<Triplet<T>>(this.tripletConLoader);
     }
-    public TripletContainer(Int32 initCap)
+    public TripletContainer(List<Triplet<T>> tripletCon)
     {
-        this.TC_arr = new List<Triplet<T>>(initCap);
+        this.tripletCon = tripletCon;
     }
-    //!constructor
+    public TripletContainer(int cap)
+    {
+        this.tripletCon = new List<Triplet<T>>(cap);
+    }
+    private void ensureList()
+    {
+        if (tripletCon == null)
+            tripletCon = new List<Triplet<T>>(tripletConLoader);
+    }
+    public int SumAt(int initVal, TripletContainer<int> l)
+    {
+        for (int i = 0; i < l.Count; i++)
+            initVal += l[i]._triplet_unit_1 + l[i]._triplet_unit_2 + l[i]._triplet_unit_3;
 
-    //destructor
-    //
-    //!destructor
-
-    //properties
-    public int Capacity
-    {
-        get => this.TC_arr.Capacity;
-        set { this.TC_arr.Capacity = value; }
+        return initVal;
     }
-    public int Count
+    public int SumAt(int initVal, Triplet<int> tr)
     {
-        get => this.TC_arr.Count;
+        initVal += tr._triplet_unit_1 + tr._triplet_unit_2 + tr._triplet_unit_3;
+        return initVal;
+    }
+    public TripletContainer<T> GetRange(int start, int end)
+    {
+        return new TripletContainer<T>(tripletCon.GetRange(start, end));
+    }
+    public TripletContainer<T> GetRange(TripletConPos pos)
+    {
+        switch(pos)
+        {
+            case TripletConPos.ALL:
+                return GetRange(0, tripletCon.Count);
+            case TripletConPos.START:
+                return GetRange(0, 0);
+            case TripletConPos.END:
+                return GetRange(tripletCon.Count, tripletCon.Count);
+        }
+        return null;
+    }
+    #region ILIST<T> MEMBERS
+    public int IndexOf(Triplet<T> item)
+    {
+        ensureList();
+        return tripletCon.IndexOf(item);
+    }
+    public void Insert(int index, Triplet<T> item)
+    {
+        ensureList();
+        tripletCon.Insert(index, item);
+    }
+    public void RemoveAt(int index)
+    {
+        ensureList();
+        tripletCon.RemoveAt(index);
     }
     public Triplet<T> this[int index]
     {
-        get => this.TC_arr[index];
-        set { this.TC_arr[index] = value; }
+        get
+        {
+            ensureList();
+            return tripletCon[index];
+        }
+        set
+        {
+            ensureList();
+            tripletCon[index] = value;
+        }
     }
-    //!properties
-
-    //functions
+    #endregion
     public void Add(Triplet<T> item)
     {
-        this.TC_arr.Add(item);
+        ensureList();
+        tripletCon.Add(item);
     }
     public void Clear()
     {
-        this.TC_arr.Clear();
+        ensureList();
+        tripletCon.Clear();
     }
     public bool Contains(Triplet<T> item)
     {
-        return this.TC_arr.Contains(item);
-    }
-    public void CopyTo(Triplet<T>[] array)
-    {
-        this.TC_arr.CopyTo(array);
+        ensureList();
+        return tripletCon.Contains(item);
     }
     public void CopyTo(Triplet<T>[] array, int arrayIndex)
     {
-        this.TC_arr.CopyTo(array, arrayIndex);
+        ensureList();
+        tripletCon.CopyTo(array, arrayIndex);
     }
-    public void CopyTo(int index, Triplet<T>[] array, int arrayIndex, int count)
+    public int Count
     {
-        this.TC_arr.CopyTo(index, array, arrayIndex, count);
+        get { ensureList(); return tripletCon.Count; }
     }
-    public override bool Equals(Object? obj)
+    public bool IsReadOnly
     {
-        return this.TC_arr.Equals(obj);
+        get { return false; }
     }
-    public override int GetHashCode()
-    {
-        return this.TC_arr.GetHashCode();
-    }
-    public Triplet<T>? Find(Predicate<Triplet<T>> match)
-    {
-        return this.TC_arr.Find(match);
-    }
-    public void ForEach(Action<Triplet<T>> action)
-    {
-        this.TC_arr.ForEach(action);
-    }
-    public int IndexOf(Triplet<T> tr)
-    {
-        return this.TC_arr.IndexOf(tr);
-    }
-    //!functions
 
-    //member data
-    private List<Triplet<T>> TC_arr;
-    //!member data
+    Triplet<T> IList<Triplet<T>>.this[int index] { 
+        get { 
+            ensureList();
+            return tripletCon[index]; 
+        }
+        set {
+            ensureList();
+            tripletCon[index] = value;
+        }
+    }
+
+    public bool Remove(Triplet<T> item)
+    {
+        ensureList();
+        return tripletCon.Remove(item);
+    }
+    public IEnumerator<Triplet<T>> GetEnumerator()
+    {
+        ensureList();
+        return tripletCon.GetEnumerator();
+    }
+    #region IENUMERABLE_MEMBERS
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    {
+        ensureList();
+        return tripletCon.GetEnumerator();
+    }
+    #endregion //!IENUMERABLE_MEMBERS
 }
 #endregion //!TRIPLET_CONTAINER
 

@@ -131,12 +131,14 @@ namespace wrd
         }
         public Image(int width, int height)
         {
+            this.pixelContainer = new PIXEL_VECTOR();
             setResolution(width, height);
         }
         //constructor
         //  Vector2 as parameter (x->width, y->height)
         public Image(Vector2<int> resolution)
         {
+            this.pixelContainer = new PIXEL_VECTOR();
             setResolution(resolution);
         }
         //IEnumerable constructor
@@ -161,11 +163,12 @@ namespace wrd
         {
             this.resolution = new Vector2<int>(width, height);
             //resize existing vector
-            //pixel_container.resize(height, std::vector<Pixel>(width));
-            // if(height > this.pixelContainer.Capacity) {
-            //     this.pixelContainer.Capacity = ((int)height);
-            // }
-            // this.pixelContainer.AddRange(Enumerable.Repeat(new List<Pixel>(), height - this.pixelContainer.Count));
+            //Console.WriteLine(this.pixelContainer.Capacity);
+            if (this.resolution.y > this.pixelContainer.Capacity)
+            {
+                this.pixelContainer.AddRange(Enumerable.Repeat(new List<Pixel>(this.resolution.x), this.resolution.y));
+                Console.WriteLine(this.pixelContainer.Capacity);
+            }
         }
         public void setResolution(Vector2<int> resolution)
         {
@@ -174,7 +177,8 @@ namespace wrd
             //  resolution.y = ROW_COUNT
             //  resolution.x = COL_COUNT
             //pixel_container.resize(resolution.y, std::vector<Pixel>(resolution.x));
-            //std::cout << "width = " << pixel_container.at(0).size() << " height = " << pixel_container.size() << std::endl;
+            if (this.resolution.y > this.pixelContainer.Capacity)
+                this.pixelContainer.AddRange(Enumerable.Repeat(new List<Pixel>(this.resolution.x), this.resolution.y - this.pixelContainer.Count));
         }
         public void setPixel(int x, int y, Pixel pxl)
         {
@@ -194,11 +198,21 @@ namespace wrd
             if (position.y > this.pixelContainer.Count || position.x > this.pixelContainer[0].Count)
             {
                 Console.WriteLine("Image::setPixel(int, int, Pixel): invalid size!");
-                System.Environment.Exit(1);
+                Console.WriteLine("position: [{0}]X[{0}]", position.x, position.y);
+                Console.WriteLine("size: [{0}]X[{0}]", this.pixelContainer[0].Count, this.pixelContainer.Count);
+                throw new Exception();
             }
             else
             {
-                this.pixelContainer[position.y][position.x] = pxl;
+                if(position.y == 0 && position.x == 0)
+                {
+                    this.pixelContainer.AddRange(Enumerable.Repeat(new List<Pixel>(this.resolution.x), this.resolution.y));
+                }
+                else
+                {
+                    Console.WriteLine(this.pixelContainer.Count);
+                    this.pixelContainer[position.y][position.x] = pxl;
+                }
             }
         }
         //get functions
