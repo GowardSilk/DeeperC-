@@ -120,25 +120,22 @@ namespace wrd
     {
         //member data
         private Vector2<int> resolution;
-        private PIXEL_VECTOR pixelContainer;
+        private PIXEL_VECTOR pixelContainer = new PIXEL_VECTOR();
         //!member data
 
         //constructors
         public Image()
         {
             this.resolution = new Vector2<int>(0, 0);
-            this.pixelContainer = new PIXEL_VECTOR();
         }
         public Image(int width, int height)
         {
-            this.pixelContainer = new PIXEL_VECTOR();
             setResolution(width, height);
         }
         //constructor
         //  Vector2 as parameter (x->width, y->height)
         public Image(Vector2<int> resolution)
         {
-            this.pixelContainer = new PIXEL_VECTOR();
             setResolution(resolution);
         }
         //IEnumerable constructor
@@ -167,7 +164,6 @@ namespace wrd
             if (this.resolution.y > this.pixelContainer.Capacity)
             {
                 this.pixelContainer.AddRange(Enumerable.Repeat(new List<Pixel>(this.resolution.x), this.resolution.y));
-                Console.WriteLine(this.pixelContainer.Capacity);
             }
         }
         public void setResolution(Vector2<int> resolution)
@@ -188,32 +184,22 @@ namespace wrd
                 System.Environment.Exit(1);
             }
             else
-            {
                 this.pixelContainer[y][x] = pxl;
-            }
         }
         public void setPixel(Vector2<int> position, Pixel pxl)
         {
             //std::cout << pxl.getRGB()._triplet_unit_1 << "," << pxl.getRGB()._triplet_unit_2 << "," << pxl.getRGB()._triplet_unit_3 << std::endl;
-            if (position.y > this.pixelContainer.Count || position.x > this.pixelContainer[0].Count)
-            {
-                Console.WriteLine("Image::setPixel(int, int, Pixel): invalid size!");
-                Console.WriteLine("position: [{0}]X[{0}]", position.x, position.y);
-                Console.WriteLine("size: [{0}]X[{0}]", this.pixelContainer[0].Count, this.pixelContainer.Count);
-                throw new Exception();
-            }
+            //if (position.y > this.pixelContainer.Count || position.x > this.pixelContainer[0].Count)
+            //{
+            //    Console.WriteLine("Image::setPixel(int, int, Pixel): invalid size!");
+            //    Console.WriteLine("position: [{0}]X[{0}]", position.x, position.y);
+            //    Console.WriteLine("size: [{0}]X[{0}]", this.pixelContainer[0].Count, this.pixelContainer.Count);
+            //    throw new Exception();
+            //}
+            if (position.y == 0 && position.x == 0)
+                this.pixelContainer.AddRange(Enumerable.Repeat(new List<Pixel>(this.resolution.x), this.resolution.y));
             else
-            {
-                if(position.y == 0 && position.x == 0)
-                {
-                    this.pixelContainer.AddRange(Enumerable.Repeat(new List<Pixel>(this.resolution.x), this.resolution.y));
-                }
-                else
-                {
-                    Console.WriteLine(this.pixelContainer.Count);
-                    this.pixelContainer[position.y][position.x] = pxl;
-                }
-            }
+                this.pixelContainer[position.x].Insert(position.y, pxl);
         }
         //get functions
         public Vector2<int> getResolution()

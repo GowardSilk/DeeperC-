@@ -11,4 +11,9 @@
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="algos\Lore\Log\" />
+    <Folder Include="algos\Lore\Footage\" />
+  </ItemGroup>
+
 </Project>

@@ -1,8 +1,8 @@
 ﻿using System.Text;
 
-class Terminal1Test
+class Terminal9Test
 {
-    const string fileName = "Terminal1.dat";
+    const string fileName = "Terminal9.dat";
     public static void Write()
     {
         using (var stream = File.Open(fileName, FileMode.Create))
@@ -16,17 +16,13 @@ class Terminal1Test
                     //get random Triplet as input
                     Triplet<int> input = new Triplet<int>(rndT.RandomInt(0, 255), rndT.RandomInt(0, 255), rndT.RandomInt(0, 255));
                     //write input
-                    writer.Write(input._triplet_unit_1);
-                    writer.Write(input._triplet_unit_2);
-                    writer.Write(input._triplet_unit_3);
-                    Console.WriteLine(input);
+                    writer.Write(input.unit_1);
+                    writer.Write(input.unit_2);
+                    writer.Write(input.unit_3);
                     //get expected from input
-                    Triplet<int> expected = Terminal1Algo.terminal_function(input);
-                    Console.WriteLine(expected);
+                    bool expected = Terminal9Algo.terminal_function(input);
                     //write it inside the file
-                    writer.Write(expected._triplet_unit_1);
-                    writer.Write(expected._triplet_unit_2);
-                    writer.Write(expected._triplet_unit_3);
+                    writer.Write(expected);
                 }
             }
         }

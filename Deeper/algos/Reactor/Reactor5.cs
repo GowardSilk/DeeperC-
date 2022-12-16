@@ -25,11 +25,9 @@ class Reactor5Algo
     }
     public static void Exec()
     {
-        //wrd.Reactor_prcl reactor = new wrd.Reactor_prcl();
-        //reactor.Connect(wrd._REACTOR_.MARSCHAL_v014);
-        //reactor.Hijack(reactor_function);
-        //reactor.Override();
-        string ans = reactor_function("abcde", 2);
-        Console.WriteLine(ans);
+        wrd.Reactor_prcl reactor = new wrd.Reactor_prcl();
+        reactor.Connect(wrd._REACTOR_.MARSCHAL_v014);
+        reactor.Hijack(reactor_function);
+        reactor.Override();
     }
 }

@@ -19,9 +19,9 @@ class Terminal4Test
                         //get random Triplet as input
                         Triplet<int> input = new Triplet<int>(rndT.RandomInt(0, 255), rndT.RandomInt(0, 255), rndT.RandomInt(0, 255));
                         //write input
-                        writer.Write(input._triplet_unit_1);
-                        writer.Write(input._triplet_unit_2);
-                        writer.Write(input._triplet_unit_3);
+                        writer.Write(input.unit_1);
+                        writer.Write(input.unit_2);
+                        writer.Write(input.unit_3);
                         tr_con.Add(input);
                     }
                     //get expected from input

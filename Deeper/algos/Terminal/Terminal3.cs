@@ -16,7 +16,7 @@
     public static void Exec()
     {
         wrd.Terminal_prcl terminal = new wrd.Terminal_prcl();
-        terminal.Connect(wrd._TERMINAL_.C);
+        terminal.Connect(wrd._TERMINAL_.B_301);
         terminal.Hijack(terminal_function);
         terminal.Override();
     }

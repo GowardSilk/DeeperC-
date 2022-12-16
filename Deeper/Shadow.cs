@@ -1,15 +1,17 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-namespace wrd
+﻿namespace wrd
 {
     public class Shadow_prcl<T1, T2>
     {
-        private List<Tuple<T1, T2>> TestCases;
+        private List<Tuple<T1, T2>> TestCases = new List<Tuple<T1, T2>>();
+        public Shadow_prcl() { }
         public Shadow_prcl(List<Tuple<T1, T2>> testCases)
         {
             TestCases = testCases;
         }
-        public Shadow_prcl() { }
+        public void Append(List<Tuple<T1, T2>> testCases)
+        {
+            this.TestCases.AddRange(testCases);
+        }
         private bool Comp<T>(T x, T y)
         {
             return EqualityComparer<T>.Default.Equals(x, y);
@@ -19,7 +21,7 @@ namespace wrd
             int TestSuccess = 0;
             foreach(var Test in TestCases)
             {
-                if (Comp(f(Test.Item2), Test.Item1))
+                if (!Comp(f(Test.Item2), Test.Item1))
                 {
                     Console.WriteLine("[SHADOW]: Test failed!");
                     Console.WriteLine("Function arguments: {0}", Test.Item2);

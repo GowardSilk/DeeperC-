@@ -1,6 +1,4 @@
-﻿#define wString
-
-//define most common use cases
+﻿//define most common use cases
 //of Vector2<T> class 
 using Vector2u = Vector2<uint>;
 using Vector2i = Vector2<int>;
@@ -31,9 +29,9 @@ public class Triplet<T>
     //constructor
     public Triplet(T t1, T t2, T t3)
     {
-        this._triplet_unit_1 = t1;
-        this._triplet_unit_2 = t2;
-        this._triplet_unit_3 = t3;
+        this.unit_1 = t1;
+        this.unit_2 = t2;
+        this.unit_3 = t3;
     }
     //!constructor
 
@@ -42,12 +40,27 @@ public class Triplet<T>
     //!destrcutor
 
     //member data
-    public T _triplet_unit_1;
-    public T _triplet_unit_2;
-    public T _triplet_unit_3;
+    public T unit_1 { get; set; }
+    public T unit_2 { get; set; }
+    public T unit_3 { get; set; }
     //!member data
 
     //operator overriding
+    public T this[int index]
+    {
+        get {
+            if(index == 1) return this.unit_1;
+            else if (index == 2) return this.unit_2;
+            else if (index == 3) return this.unit_3;
+            else throw new IndexOutOfRangeException();
+        }
+        set {
+            if (index == 1) this.unit_1 = value;
+            else if (index == 2) this.unit_2 = value;
+            else if (index == 3) this.unit_3 = value;
+            else throw new IndexOutOfRangeException();
+        }
+    }
     public override bool Equals(object? obj)
     {
         if (obj == null || GetType() != obj.GetType())
@@ -61,50 +74,50 @@ public class Triplet<T>
         //dynamic -> https://stackoverflow.com/questions/14020486/operator-overloading-with-generics
         dynamic d_tr = tr;
         return (d_tr is not null) &&
-               (_triplet_unit_1 == d_tr._triplet_unit_1 &&
-                _triplet_unit_2 == d_tr._triplet_unit_2 &&
-                _triplet_unit_3 == d_tr._triplet_unit_3);
+               (unit_1 == d_tr.unit_1 &&
+                unit_2 == d_tr.unit_2 &&
+                unit_3 == d_tr.unit_3);
     }
     public static bool operator ==(Triplet<T> lhs, Triplet<T> rhs)
     {
         dynamic d_lhs = lhs, d_rhs = rhs;
-        return d_lhs._triplet_unit_1 == d_rhs._triplet_unit_1 &&
-               d_lhs._triplet_unit_2 == d_rhs._triplet_unit_2 &&
-               d_lhs._triplet_unit_3 == d_rhs._triplet_unit_3;
+        return d_lhs.unit_1 == d_rhs.unit_1 &&
+               d_lhs.unit_2 == d_rhs.unit_2 &&
+               d_lhs.unit_3 == d_rhs.unit_3;
     }
     public static bool operator !=(Triplet<T> lhs, Triplet<T> rhs)
     {
         dynamic d_lhs = lhs, d_rhs = rhs;
-        return d_lhs._triplet_unit_1 != d_rhs._triplet_unit_1 ||
-               d_lhs._triplet_unit_2 != d_rhs._triplet_unit_2 ||
-               d_lhs._triplet_unit_3 != d_rhs._triplet_unit_3;
+        return d_lhs.unit_1 != d_rhs.unit_1 ||
+               d_lhs.unit_2 != d_rhs.unit_2 ||
+               d_lhs.unit_3 != d_rhs.unit_3;
     }
     public static bool operator >(Triplet<T> lhs, Triplet<T> rhs)
     {
         dynamic d_lhs = lhs, d_rhs = rhs;
-        return (d_lhs._triplet_unit_1 + d_lhs._triplet_unit_2 + d_lhs._triplet_unit_3)
+        return (d_lhs.unit_1 + d_lhs.unit_2 + d_lhs.unit_3)
                 >
-               (d_rhs._triplet_unit_1 + d_rhs._triplet_unit_2 + d_rhs._triplet_unit_3);
+               (d_rhs.unit_1 + d_rhs.unit_2 + d_rhs.unit_3);
     }
     public static bool operator <(Triplet<T> lhs, Triplet<T> rhs)
     {
         dynamic d_lhs = lhs, d_rhs = rhs;
-        return (d_lhs._triplet_unit_1 + d_lhs._triplet_unit_2 + d_lhs._triplet_unit_3)
+        return (d_lhs.unit_1 + d_lhs.unit_2 + d_lhs.unit_3)
                 <
-               (d_rhs._triplet_unit_1 + d_rhs._triplet_unit_2 + d_rhs._triplet_unit_3);
+               (d_rhs.unit_1 + d_rhs.unit_2 + d_rhs.unit_3);
     }
     //!operator overriding
 
     //fucntion override
     public override int GetHashCode()
     {
-        return HashCode.Combine(_triplet_unit_1, _triplet_unit_2, _triplet_unit_3);
+        return HashCode.Combine(unit_1, unit_2, unit_3);
     }
     public override string ToString()
     {
-        return "{\n" + "_triplet_unit_1 = " + _triplet_unit_1 +
-               ",\n" + "_triplet_unit_2 = " + _triplet_unit_2 +
-               ",\n" + "_triplet_unit_3 = " + _triplet_unit_3 + "\n}";
+        return "{\n" + "_triplet_unit_1 = " + unit_1 +
+               ",\n" + "_triplet_unit_2 = " + unit_2 +
+               ",\n" + "_triplet_unit_3 = " + unit_3 + "\n}";
     }
     //!function override
 
@@ -113,18 +126,18 @@ public class Triplet<T>
     {
         return new Triplet<string>
         (
-            tr._triplet_unit_1.ToString(),
-            tr._triplet_unit_2.ToString(),
-            tr._triplet_unit_3.ToString()
+            tr.unit_1.ToString(),
+            tr.unit_2.ToString(),
+            tr.unit_3.ToString()
         );
     }
     public Triplet<int> CastToInt(Triplet<string> tr)
     {
         return new Triplet<int>
         (
-            Int32.Parse(tr._triplet_unit_1),
-            Int32.Parse(tr._triplet_unit_1),
-            Int32.Parse(tr._triplet_unit_1)
+            Int32.Parse(tr.unit_1),
+            Int32.Parse(tr.unit_1),
+            Int32.Parse(tr.unit_1)
         );
     }
     //!custom functions
@@ -160,13 +173,13 @@ public class TripletContainer<T> : IList<Triplet<T>>
     public int SumAt(int initVal, TripletContainer<int> l)
     {
         for (int i = 0; i < l.Count; i++)
-            initVal += l[i]._triplet_unit_1 + l[i]._triplet_unit_2 + l[i]._triplet_unit_3;
+            initVal += l[i].unit_1 + l[i].unit_2 + l[i].unit_3;
 
         return initVal;
     }
     public int SumAt(int initVal, Triplet<int> tr)
     {
-        initVal += tr._triplet_unit_1 + tr._triplet_unit_2 + tr._triplet_unit_3;
+        initVal += tr.unit_1 + tr.unit_2 + tr.unit_3;
         return initVal;
     }
     public TripletContainer<T> GetRange(int start, int end)
